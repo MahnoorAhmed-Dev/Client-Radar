@@ -30,6 +30,8 @@ function DashboardContent() {
   const [scanLog, setScanLog] = useState<string[]>([])
   const [expandedUsecase, setExpandedUsecase] = useState<string | null>(null)
   const [copied, setCopied] = useState<string | null>(null)
+  const [generatingProposal, setGeneratingProposal] =
+    useState<string | null>(null)
   const [filter, setFilter] = useState<'all' | 'new' | 'viewed' | 'acted'>('all')
 
   const loadDashboard = useCallback(async () => {
@@ -113,10 +115,52 @@ function DashboardContent() {
   }
 
   const copyPitch = (id: string, text: string) => {
-    navigator.clipboard.writeText(text)
-    setCopied(id)
-    setTimeout(() => setCopied(null), 2000)
+  navigator.clipboard.writeText(text)
+  setCopied(id)
+  setTimeout(() => setCopied(null), 2000)
+}
+
+const generateProposal = async (usecase: Usecase) => {
+  try {
+    setGeneratingProposal(usecase.id)
+
+    const response = await fetch('/api/generate-proposal', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        usecaseId: usecase.id,
+      }),
+    })
+
+    if (!response.ok) {
+      throw new Error('Failed to generate proposal')
+    }
+
+    const blob = await response.blob()
+
+    const url = window.URL.createObjectURL(blob)
+
+    const a = document.createElement('a')
+
+    a.href = url
+    a.download = `${usecase.client_name || 'client'}-proposal.pdf`
+
+    document.body.appendChild(a)
+
+    a.click()
+
+    a.remove()
+
+    window.URL.revokeObjectURL(url)
+  } catch (err) {
+    console.error(err)
+    alert('Proposal generation failed')
+  } finally {
+    setGeneratingProposal(null)
   }
+}
 
   const filteredUsecases = usecases.filter(
     (u) => filter === 'all' || u.status === filter
@@ -441,12 +485,23 @@ function DashboardContent() {
                           {uc.status === 'acted' ? 'ACTED' : 'MARK ACTED'}
                         </button>
                         <button
-                          onClick={() => copyPitch(uc.id, uc.draft_pitch)}
-                          className="px-4 py-2 rounded border border-radar-border font-mono text-xs text-radar-dim hover:border-radar-accent hover:text-radar-accent transition-all flex items-center gap-2"
-                        >
-                          <Copy size={12} />
-                          COPY PITCH
-                        </button>
+  onClick={() => copyPitch(uc.id, uc.draft_pitch)}
+  className="px-4 py-2 rounded border border-radar-border font-mono text-xs text-radar-dim hover:border-radar-accent hover:text-radar-accent transition-all flex items-center gap-2"
+>
+  <Copy size={12} />
+  COPY PITCH
+</button>
+
+<button
+  onClick={() => generateProposal(uc)}
+  disabled={generatingProposal === uc.id}
+  className="px-4 py-2 rounded border border-radar-border font-mono text-xs text-radar-dim hover:border-radar-yellow hover:text-radar-yellow transition-all flex items-center gap-2 disabled:opacity-50"
+>
+  <Zap size={12} />
+  {generatingProposal === uc.id
+    ? 'GENERATING...'
+    : 'GENERATE PROPOSAL'}
+</button>
                         <button className="px-4 py-2 rounded border border-radar-border font-mono text-xs text-radar-dim hover:border-radar-blue hover:text-radar-blue transition-all flex items-center gap-2">
                           <ExternalLink size={12} />
                           OPEN LINKEDIN
