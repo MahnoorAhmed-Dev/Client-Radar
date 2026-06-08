@@ -117,12 +117,14 @@ Return plain text only.
       'Proposal generation failed'
 
     const pdfBytes =
-      await createProposalPdf(
-        client.name,
-        proposal
-      )
+  await createProposalPdf(
+    client.name,
+    proposal
+  )
 
-    return new NextResponse(pdfBytes, {
+const pdfBuffer = Buffer.from(pdfBytes)
+
+return new NextResponse(pdfBuffer, {
       headers: {
         'Content-Type':
           'application/pdf',
