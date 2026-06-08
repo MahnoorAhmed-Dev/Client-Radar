@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import './globals.css'
+import ThemeProvider from './theme-provider'
 
 export const metadata: Metadata = {
   title: 'ClientRadar — B2B Opportunity Intelligence',
@@ -9,9 +10,10 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className="radar-bg min-h-screen">
-        <div className="scanline" />
-        {children}
+      <body>
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   )

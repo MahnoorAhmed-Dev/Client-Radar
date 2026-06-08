@@ -13,16 +13,16 @@ module.exports = {
       },
       colors: {
         radar: {
-          bg: '#060608',
-          surface: '#0d0d12',
-          border: '#1a1a24',
-          accent: '#00ff88',
-          yellow: '#ffd93d',
-          red: '#ff4757',
-          blue: '#4a9eff',
-          muted: '#3a3a4a',
-          text: '#e8e8f0',
-          dim: '#6b6b80',
+          bg: 'var(--bg)',
+          surface: 'var(--surface)',
+          border: 'var(--border)',
+          accent: 'var(--accent)',
+          yellow: 'var(--yellow)',
+          red: 'var(--red)',
+          blue: 'var(--blue)',
+          muted: 'var(--muted)',
+          text: 'var(--text)',
+          dim: 'var(--dim)',
         }
       },
       animation: {
