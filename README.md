@@ -7,9 +7,9 @@ ClientRadar is built for B2B freelancers, agencies, and corporate service provid
 
 ## The Problem
 
-When a client hires a new Head of Growth, raises funding, or launches a new product line—that is a signal. It means they have a new problem and a budget to solve it. Nobody catches these signals consistently.
+When a client hires a new Head of Growth, raises funding, or launches a new product line—that is a signal. It means they have a new problem and a budget to solve it. Nobody catches these signals[...]
 
-For corporate service sellers, the problem runs deeper. They have a full catalogue of services but no way to know which client needs what right now. They default to cold outreach (which fails) or wait for clients to come to them (which is slow).
+For corporate service sellers, the problem runs deeper. They have a full catalogue of services but no way to know which client needs what right now. They default to cold outreach (which fails) or [...]
 
 Tools like LinkedIn Sales Navigator are built for enterprise sales teams with big budgets. Independent operators and growing service businesses have nothing built for them.
 
@@ -25,7 +25,7 @@ The output isn't a report or dashboard. It's a specific action: "Here is what ch
 
 ## Who It's For
 
-Our primary customers are Pakistani B2B service providers: freelancers, small agencies, and corporate sales teams offering services like web development, branding, SEO, software, or consulting. The market opportunity is substantial—Pakistan has over 1.5 million registered freelancers, with at least 300,000 operating in B2B services. Across South Asia, the B2B services sector is worth hundreds of billions of dollars.
+Our primary customers are Pakistani B2B service providers: freelancers, small agencies, and corporate sales teams offering services like web development, branding, SEO, software, or consulting. Th[...]
 
 ## How It Works
 
@@ -42,7 +42,7 @@ Our primary customers are Pakistani B2B service providers: freelancers, small ag
 | Ibad | Frontend |
 | Shayan | Frontend |
 
-We bring together backend engineering, frontend development, and product thinking. We've built and shipped AI-powered production systems before and understand this market from the inside. We are not building for an imagined customer—we are building for ourselves and people exactly like us.
+We bring together backend engineering, frontend development, and product thinking. We've built and shipped AI-powered production systems before and understand this market from the inside. We are n[...]
 
 ## Tech Stack
 
@@ -132,13 +132,6 @@ npm run dev
 
 Open http://localhost:3000
 
-## Git Workflow
-
-- Branch naming: `ibad/feature-name`, `mahnoor/feature-name`, `shayan/feature-name`
-- Always branch off `main`
-- Merge order: Mahnoor (backend) first, then Ibad, then Shayan
-- Commit prefixes: `feat:`, `fix:`, `chore:`
-
 ## API Keys
 
 | Service | URL | Notes |
@@ -147,18 +140,9 @@ Open http://localhost:3000
 | Serper | https://serper.dev | 100 searches/day free |
 | Supabase | https://supabase.com | Free tier |
 
-## Demo Script (Pitch Day)
-
-1. Landing page — "Your clients are moving. Are you watching?"
-2. Onboard — add your agency + 2 real clients
-3. Hit **SCAN** — watch terminal log fill live
-4. Show generated opportunity cards — trigger + pitch
-5. Copy pitch — ready to send right now
-
-**Money line:** "This isn't a ChatGPT prompt. It knows your services, watches your clients, and tells you exactly when to reach out and what to say."
-
 ## Roadmap
 
+- Auto-populate business profile and services through PDF proposal upload
 - Daily automated monitoring so users wake up to fresh opportunities every morning
 - WhatsApp and email alerts to deliver intelligence directly to where users operate
 - CRM layer to track which pitches were sent, opened, and converted
@@ -167,4 +151,4 @@ Open http://localhost:3000
 
 ## Status
 
-ClientRadar is live and fully functional. Users onboard by pasting their website URL and their business profile, services, and past work are extracted automatically. Clients are added and monitored. AI-generated pitch opportunities with ready-to-send outreach messages are produced in under 60 seconds. Testing across multiple Pakistani company profiles confirms the pipeline generates accurate, contextually relevant opportunities that a real salesperson would actually use.
+ClientRadar is live and fully functional. Users onboard by pasting their website URL and their business profile, services, and past work are extracted automatically. Clients are added and monitor[...]
