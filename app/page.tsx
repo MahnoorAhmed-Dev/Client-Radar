@@ -6,7 +6,12 @@ import { useEffect, useState } from 'react'
 export default function Home() {
   const router = useRouter()
   const [typed, setTyped] = useState('')
+  const [businessId, setBusinessId] = useState<string | null>(null)
   const fullText = 'Your clients are moving. Are you watching?'
+
+  useEffect(() => {
+    setBusinessId(localStorage.getItem('businessId'))
+  }, [])
 
   useEffect(() => {
     let i = 0
@@ -21,18 +26,14 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
-  const businessId = typeof window !== 'undefined' ? localStorage.getItem('businessId') : null
-
   return (
     <main className="min-h-screen flex flex-col items-center justify-center px-6 relative">
-      {/* Corner decorations */}
       <div className="fixed top-0 left-0 w-32 h-32 border-l-2 border-t-2 border-radar-accent opacity-20" />
       <div className="fixed top-0 right-0 w-32 h-32 border-r-2 border-t-2 border-radar-accent opacity-20" />
       <div className="fixed bottom-0 left-0 w-32 h-32 border-l-2 border-b-2 border-radar-accent opacity-20" />
       <div className="fixed bottom-0 right-0 w-32 h-32 border-r-2 border-b-2 border-radar-accent opacity-20" />
 
       <div className="max-w-3xl w-full text-center space-y-8">
-        {/* Logo */}
         <div className="space-y-2">
           <div className="flex items-center justify-center gap-3 mb-4">
             <div className="relative">
@@ -56,7 +57,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Typing animation */}
         <div className="relative">
           <p className="font-display text-xl text-radar-dim leading-relaxed min-h-[2rem]">
             {typed}
@@ -66,7 +66,6 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Feature pills */}
         <div className="flex flex-wrap gap-3 justify-center">
           {[
             '↗ Tracks client hires',
@@ -83,7 +82,6 @@ export default function Home() {
           ))}
         </div>
 
-        {/* How it works */}
         <div className="grid grid-cols-3 gap-4 text-left">
           {[
             {
@@ -106,7 +104,9 @@ export default function Home() {
               key={item.step}
               className="p-4 rounded border border-radar-border bg-radar-surface"
             >
-              <div className="font-mono text-radar-accent text-xs mb-2">{item.step}</div>
+              <div className="font-mono text-radar-accent text-xs mb-2">
+                {item.step}
+              </div>
               <div className="font-display font-semibold text-radar-text text-sm mb-1">
                 {item.title}
               </div>
@@ -117,7 +117,6 @@ export default function Home() {
           ))}
         </div>
 
-        {/* CTAs */}
         <div className="flex gap-4 justify-center">
           <button
             onClick={() => router.push('/onboarding')}

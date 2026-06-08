@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { X, Plus } from 'lucide-react'
+import { X, Plus, Globe, Loader, Sparkles } from 'lucide-react'
 
 interface ClientEntry {
   name: string
@@ -14,7 +14,14 @@ export default function OnboardingPage() {
   const router = useRouter()
   const [step, setStep] = useState(1)
   const [loading, setLoading] = useState(false)
+  const [extracting, setExtracting] = useState(false)
+  const [extractingClients, setExtractingClients] = useState(false)
   const [error, setError] = useState('')
+  const [extractError, setExtractError] = useState('')
+  const [websiteUrl, setWebsiteUrl] = useState('')
+  const [portfolioContent, setPortfolioContent] = useState('')
+  const [extracted, setExtracted] = useState(false)
+  const [clientsExtracted, setClientsExtracted] = useState(false)
 
   // Business info
   const [businessName, setBusinessName] = useState('')
@@ -44,6 +51,76 @@ export default function OnboardingPage() {
     const updated = [...clients]
     updated[i] = { ...updated[i], [field]: val }
     setClients(updated)
+  }
+
+  // Business auto-fill
+  const handleExtract = async () => {
+    setExtracting(true)
+    setExtractError('')
+    setExtracted(false)
+
+    try {
+      if (!websiteUrl) {
+        setExtractError('Enter a URL first.')
+        setExtracting(false)
+        return
+      }
+
+      const formData = new FormData()
+      formData.append('url', websiteUrl)
+
+      const res = await fetch('/api/extract-business', {
+        method: 'POST',
+        body: formData,
+      })
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error)
+
+      const { extracted: info } = data
+      if (info.businessName) setBusinessName(info.businessName)
+      if (info.services?.length) setServices(info.services)
+      if (info.expertise) setExpertise(info.expertise)
+      if (info.pastWork) setPastWork(info.pastWork)
+
+      setPortfolioContent(data.rawContent || '')
+      setExtracted(true)
+    } catch (err) {
+      setExtractError(err instanceof Error ? err.message : 'Extraction failed')
+    } finally {
+      setExtracting(false)
+    }
+  }
+
+  // Extract clients from portfolio
+  const handleExtractClients = async () => {
+    setExtractingClients(true)
+    setClientsExtracted(false)
+
+    try {
+      const res = await fetch('/api/extract-clients-from-portfolio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          portfolioUrl: websiteUrl || null,
+          portfolioContent: portfolioContent || null,
+        }),
+      })
+
+      const data = await res.json()
+      if (!res.ok) throw new Error(data.error)
+
+      if (data.clients && data.clients.length > 0) {
+        const manualClients = clients.filter((c) => c.name.trim() !== '')
+        const merged = [...data.clients, ...manualClients]
+        setClients(merged)
+      }
+      setClientsExtracted(true)
+    } catch (err) {
+      console.error('Extract clients error:', err)
+      setClientsExtracted(true)
+    } finally {
+      setExtractingClients(false)
+    }
   }
 
   const handleSubmit = async () => {
@@ -87,8 +164,8 @@ export default function OnboardingPage() {
           </h1>
           <p className="font-display text-radar-dim text-sm">
             {step === 1
-              ? 'Tell us what you do so we can match intel to your capabilities.'
-              : 'Add the clients you want to monitor. The radar starts immediately.'}
+              ? 'Drop your website URL and we fill everything in.'
+              : 'Pull clients from your portfolio or add them manually.'}
           </p>
         </div>
 
@@ -104,9 +181,55 @@ export default function OnboardingPage() {
           ))}
         </div>
 
-        {/* Step 1 — Business Info */}
+        {/* Step 1 — Business */}
         {step === 1 && (
           <div className="space-y-6 animate-fade-in">
+            {/* Smart extract panel */}
+            <div className="p-5 rounded border border-radar-accent/30 bg-radar-accent/5">
+              <div className="flex items-center gap-2 mb-4">
+                <Sparkles size={14} className="text-radar-accent" />
+                <span className="font-mono text-xs text-radar-accent tracking-wider uppercase">
+                  Auto-fill from your website
+                </span>
+              </div>
+
+              <div className="flex gap-2">
+                <div className="flex items-center gap-2 px-4 py-2 rounded border border-radar-accent text-radar-accent bg-radar-accent/10 font-mono text-xs">
+                  <Globe size={12} /> WEBSITE URL
+                </div>
+                <input
+                  className="input-dark flex-1 px-4 py-3 rounded text-sm"
+                  placeholder="https://yourcompany.com"
+                  value={websiteUrl}
+                  onChange={(e) => setWebsiteUrl(e.target.value)}
+                />
+                <button
+                  onClick={handleExtract}
+                  disabled={extracting || !websiteUrl}
+                  className="btn-primary px-5 py-3 rounded text-xs flex items-center gap-2 whitespace-nowrap"
+                >
+                  {extracting ? (
+                    <Loader size={12} className="animate-spin" />
+                  ) : (
+                    <Sparkles size={12} />
+                  )}
+                  {extracting ? 'READING...' : 'AUTO-FILL'}
+                </button>
+              </div>
+
+              {extractError && (
+                <p className="font-mono text-xs text-radar-red mt-2">
+                  ERROR: {extractError}
+                </p>
+              )}
+              {extracted && (
+                <p className="font-mono text-xs text-radar-accent mt-2">
+                  ✓ Fields populated — review and edit below
+                </p>
+              )}
+            </div>
+
+            {/* Manual fields */}
             <div>
               <label className="font-mono text-xs text-radar-dim tracking-wider uppercase block mb-2">
                 Business / Agency Name
@@ -189,6 +312,44 @@ export default function OnboardingPage() {
         {/* Step 2 — Clients */}
         {step === 2 && (
           <div className="space-y-6 animate-fade-in">
+
+            {/* Auto-populate panel */}
+            <div className="p-5 rounded border border-radar-accent/30 bg-radar-accent/5">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Sparkles size={14} className="text-radar-accent" />
+                  <span className="font-mono text-xs text-radar-accent tracking-wider uppercase">
+                    Auto-populate from your portfolio
+                  </span>
+                </div>
+                <button
+                  onClick={handleExtractClients}
+                  disabled={extractingClients || (!websiteUrl && !portfolioContent)}
+                  className="flex items-center gap-2 px-4 py-2 rounded btn-primary text-xs disabled:opacity-40"
+                >
+                  {extractingClients ? (
+                    <Loader size={12} className="animate-spin" />
+                  ) : (
+                    <Sparkles size={12} />
+                  )}
+                  {extractingClients ? 'SCANNING...' : 'PULL MY CLIENTS'}
+                </button>
+              </div>
+
+              {!websiteUrl && !portfolioContent && (
+                <p className="font-mono text-xs text-radar-dim mt-3">
+                  Go back and auto-fill your business first — we use your portfolio to find clients.
+                </p>
+              )}
+
+              {clientsExtracted && !extractingClients && (
+                <p className="font-mono text-xs text-radar-accent mt-3">
+                  ✓ Clients pulled — edit below or add more manually
+                </p>
+              )}
+            </div>
+
+            {/* Client cards */}
             {clients.map((client, i) => (
               <div
                 key={i}
