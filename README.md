@@ -147,4 +147,4 @@ Open http://localhost:3000
 - WhatsApp and email alerts to deliver intelligence directly to where users operate
 - CRM layer to track which pitches were sent, opened, and converted
 - Shared team dashboard for corporate clients so entire sales teams work from the same live intelligence feed
-- Long term: ClientRadar becomes the permanent answer to "who should I reach out to today, and what should I  
+- Long term: ClientRadar becomes the permanent answer to "who should I reach out to today, and what should I pitch"
