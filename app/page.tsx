@@ -86,25 +86,8 @@ export default function Home() {
             ))}
           </div>
 
-          <div className="flex gap-4 justify-center flex-wrap">
-            <button
-              onClick={() => router.push('/onboarding')}
-              className="btn-primary px-8 py-3 rounded text-sm"
-            >
-              START RADAR →
-            </button>
-            {businessId && (
-              <button
-                onClick={() => router.push(`/dashboard?b=${businessId}`)}
-                className="px-8 py-3 rounded text-sm font-mono border border-radar-border text-radar-dim hover:border-radar-accent hover:text-radar-accent transition-all"
-              >
-                OPEN DASHBOARD
-              </button>
-            )}
-          </div>
-
           <p className="font-mono text-radar-dim text-xs">
-            Want to see it live? Hit START RADAR for a full demo
+            Scroll through to see the full story — demo is at the bottom
           </p>
 
           <div className="flex items-center justify-center mt-2">
@@ -115,7 +98,7 @@ export default function Home() {
 
       {/* PROBLEM */}
       <section className="py-32 px-6 border-t border-radar-border">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto text-center">
           <div className="font-mono text-radar-accent text-xs tracking-widest uppercase mb-6">
             01 / THE PROBLEM
           </div>
@@ -124,7 +107,7 @@ export default function Home() {
             <br />
             <span className="text-radar-dim">Nobody is watching.</span>
           </h2>
-          <p className="font-display text-radar-dim text-lg leading-relaxed mb-12">
+          <p className="font-display text-radar-dim text-lg leading-relaxed mb-12 max-w-2xl mx-auto">
             Freelancers, agencies, and corporate service teams lose deals not because they lack
             skill — but because they pitch at the wrong time with the wrong message. They have no
             system to know when a client is ready to buy. So they default to cold outreach that
@@ -147,9 +130,9 @@ export default function Home() {
             ].map((item) => (
               <div
                 key={item.trigger}
-                className="p-5 rounded border border-radar-border bg-radar-surface"
+                className="p-5 rounded border border-radar-border bg-radar-surface text-center"
               >
-                <div className="flex items-center gap-2 mb-3">
+                <div className="flex items-center justify-center gap-2 mb-3">
                   <Zap size={12} className="text-radar-yellow" />
                   <span className="font-mono text-xs text-radar-yellow">SIGNAL MISSED</span>
                 </div>
@@ -167,7 +150,7 @@ export default function Home() {
 
       {/* SOLUTION */}
       <section className="py-32 px-6 border-t border-radar-border">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto text-center">
           <div className="font-mono text-radar-accent text-xs tracking-widest uppercase mb-6">
             02 / THE SOLUTION
           </div>
@@ -178,7 +161,7 @@ export default function Home() {
               so you know exactly when to strike.
             </span>
           </h2>
-          <p className="font-display text-radar-dim text-lg leading-relaxed mb-12">
+          <p className="font-display text-radar-dim text-lg leading-relaxed mb-12 max-w-2xl mx-auto">
             ClientRadar is not a search tool. It is not a CRM. It is an opportunity engine. It
             monitors your clients daily, detects signals, and generates a personalised pitch matched
             to your specific services — ready to send in under 60 seconds. One more click and you
@@ -204,7 +187,7 @@ export default function Home() {
             ].map((item) => (
               <div
                 key={item.step}
-                className="p-5 rounded border border-radar-border bg-radar-surface"
+                className="p-5 rounded border border-radar-border bg-radar-surface text-center"
               >
                 <div className="font-mono text-radar-accent text-xs mb-3">{item.step}</div>
                 <div className="font-display font-bold text-radar-text text-sm mb-2">
@@ -221,7 +204,7 @@ export default function Home() {
 
       {/* WHO IT'S FOR */}
       <section className="py-32 px-6 border-t border-radar-border">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto text-center">
           <div className="font-mono text-radar-accent text-xs tracking-widest uppercase mb-6">
             03 / WHO IT IS FOR
           </div>
@@ -245,9 +228,9 @@ export default function Home() {
             ].map((item) => (
               <div
                 key={item.title}
-                className="p-6 rounded border border-radar-border bg-radar-surface flex gap-4"
+                className="p-6 rounded border border-radar-border bg-radar-surface flex flex-col items-center text-center gap-4"
               >
-                <item.icon size={20} className="text-radar-accent shrink-0 mt-1" />
+                <item.icon size={20} className="text-radar-accent" />
                 <div>
                   <div className="font-display font-bold text-radar-text text-sm mb-2">
                     {item.title}
@@ -264,7 +247,7 @@ export default function Home() {
 
       {/* MARKET */}
       <section className="py-32 px-6 border-t border-radar-border">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto text-center">
           <div className="font-mono text-radar-accent text-xs tracking-widest uppercase mb-6">
             04 / THE MARKET
           </div>
@@ -305,7 +288,7 @@ export default function Home() {
               </div>
             ))}
           </div>
-          <p className="font-display text-radar-dim text-lg leading-relaxed mt-10">
+          <p className="font-display text-radar-dim text-lg leading-relaxed mt-10 max-w-2xl mx-auto">
             This specific product — personalised, automated opportunity intelligence for service
             sellers — does not exist at this price point or level of automation anywhere in the
             region. We are creating a new category.
@@ -315,7 +298,7 @@ export default function Home() {
 
       {/* TRACTION */}
       <section className="py-32 px-6 border-t border-radar-border">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto text-center">
           <div className="font-mono text-radar-accent text-xs tracking-widest uppercase mb-6">
             05 / TRACTION
           </div>
@@ -335,9 +318,9 @@ export default function Home() {
             ].map((item) => (
               <div
                 key={item}
-                className="flex items-start gap-3 p-4 rounded border border-radar-border bg-radar-surface"
+                className="flex items-center justify-center gap-3 p-4 rounded border border-radar-border bg-radar-surface text-center"
               >
-                <CheckCircle size={14} className="text-radar-accent shrink-0 mt-0.5" />
+                <CheckCircle size={14} className="text-radar-accent shrink-0" />
                 <span className="font-display text-radar-text text-sm">{item}</span>
               </div>
             ))}
@@ -347,7 +330,7 @@ export default function Home() {
 
       {/* REVENUE */}
       <section className="py-32 px-6 border-t border-radar-border">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto text-center">
           <div className="font-mono text-radar-accent text-xs tracking-widest uppercase mb-6">
             06 / REVENUE MODEL
           </div>
@@ -379,7 +362,7 @@ export default function Home() {
             ].map((tier) => (
               <div
                 key={tier.tier}
-                className="p-6 rounded border border-radar-border bg-radar-surface"
+                className="p-6 rounded border border-radar-border bg-radar-surface text-center"
               >
                 <div className="font-mono text-radar-accent text-xs mb-1">{tier.tier}</div>
                 <div className="font-display text-3xl font-black text-radar-text mb-1">
@@ -388,7 +371,7 @@ export default function Home() {
                 <div className="font-mono text-radar-dim text-xs mb-4">{tier.who}</div>
                 <div className="space-y-2">
                   {tier.features.map((f) => (
-                    <div key={f} className="flex items-center gap-2">
+                    <div key={f} className="flex items-center justify-center gap-2">
                       <div className="w-1 h-1 rounded-full bg-radar-accent" />
                       <span className="font-display text-radar-dim text-xs">{f}</span>
                     </div>
@@ -402,7 +385,7 @@ export default function Home() {
 
       {/* ROADMAP */}
       <section className="py-32 px-6 border-t border-radar-border">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-4xl mx-auto text-center">
           <div className="font-mono text-radar-accent text-xs tracking-widest uppercase mb-6">
             07 / WHERE WE ARE GOING
           </div>
@@ -434,9 +417,9 @@ export default function Home() {
             ].map((item) => (
               <div
                 key={item.title}
-                className="p-5 rounded border border-radar-border bg-radar-surface flex gap-4"
+                className="p-5 rounded border border-radar-border bg-radar-surface flex flex-col items-center text-center gap-3"
               >
-                <item.icon size={16} className="text-radar-accent shrink-0 mt-1" />
+                <item.icon size={16} className="text-radar-accent" />
                 <div>
                   <div className="font-display font-bold text-radar-text text-sm mb-1">
                     {item.title}
@@ -451,7 +434,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA */}
+      {/* CTA / DEMO */}
       <section className="py-32 px-6 border-t border-radar-border">
         <div className="max-w-3xl mx-auto text-center space-y-8">
           <div className="flex items-center justify-center gap-3">
@@ -473,26 +456,31 @@ export default function Home() {
             get your first opportunity before you finish your coffee.
           </p>
 
-          <div className="flex gap-4 justify-center flex-wrap">
-            <button
-              onClick={() => router.push('/onboarding')}
-              className="btn-primary px-10 py-4 rounded text-sm"
-            >
-              START RADAR →
-            </button>
-            {businessId && (
-              <button
-                onClick={() => router.push(`/dashboard?b=${businessId}`)}
-                className="px-10 py-4 rounded text-sm font-mono border border-radar-border text-radar-dim hover:border-radar-accent hover:text-radar-accent transition-all"
-              >
-                OPEN DASHBOARD
-              </button>
-            )}
-          </div>
-
           <p className="font-mono text-radar-dim text-xs">
             clientradar.app · Built in 24 hours · Spectrum 26 · DHA Suffa University
           </p>
+
+          <div className="pt-8 border-t border-radar-border space-y-4">
+            <p className="font-mono text-radar-accent text-xs tracking-widest uppercase animate-pulse">
+              ↓ Live demo starts here
+            </p>
+            <div className="flex gap-4 justify-center flex-wrap">
+              <button
+                onClick={() => router.push('/onboarding')}
+                className="btn-primary px-10 py-4 rounded text-sm"
+              >
+                START RADAR →
+              </button>
+              {businessId && (
+                <button
+                  onClick={() => router.push(`/dashboard?b=${businessId}`)}
+                  className="px-10 py-4 rounded text-sm font-mono border border-radar-border text-radar-dim hover:border-radar-accent hover:text-radar-accent transition-all"
+                >
+                  OPEN DASHBOARD
+                </button>
+              )}
+            </div>
+          </div>
         </div>
       </section>
 
