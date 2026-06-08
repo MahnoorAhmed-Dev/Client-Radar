@@ -6,80 +6,152 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData()
     const url = formData.get('url') as string | null
 
-    let rawContent = ''
-
-    if (url) {
-      try {
-        const res = await fetch(url, {
-          headers: {
-            'User-Agent': 'Mozilla/5.0 (compatible; ClientRadar/1.0)',
-          },
-        })
-        const html = await res.text()
-        rawContent = html
-          .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '')
-          .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '')
-          .replace(/<[^>]+>/g, ' ')
-          .replace(/\s+/g, ' ')
-          .trim()
-          .slice(0, 8000)
-      } catch {
-        return NextResponse.json(
-          { error: 'Could not fetch that URL.' },
-          { status: 400 }
-        )
-      }
-    } else {
+    if (!url) {
       return NextResponse.json(
         { error: 'Provide a URL.' },
         { status: 400 }
       )
     }
 
-    if (!rawContent || rawContent.trim().length < 10) {
+    let rawContent = ''
+
+    try {
+      const res = await fetch(url, {
+        headers: {
+          'User-Agent':
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/124.0.0.0 Safari/537.36',
+        },
+      })
+
+      const html = await res.text()
+
+// Detect Cloudflare / anti-bot pages
+const isBlocked =
+  html.includes('Attention Required') ||
+  html.includes('Cloudflare') ||
+  html.includes('Please enable cookies') ||
+  html.includes('Sorry, you have been blocked')
+
+if (isBlocked) {
+  return NextResponse.json(
+    {
+      error:
+        'Website is protected by Cloudflare. Direct extraction is not possible.',
+      cloudflareBlocked: true,
+    },
+    { status: 400 }
+  )
+}
+
+rawContent = html
+  .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, ' ')
+  .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, ' ')
+  .replace(/<noscript[^>]*>[\s\S]*?<\/noscript>/gi, ' ')
+  .replace(/<[^>]+>/g, ' ')
+  .replace(/\s+/g, ' ')
+  .trim()
+  .slice(0, 20000)
+
+console.log(
+  'EXTRACTED CONTENT PREVIEW:',
+  rawContent.slice(0, 1000)
+)
+
+      console.log(
+        'EXTRACTED CONTENT PREVIEW:',
+        rawContent.slice(0, 1000)
+      )
+    } catch (error) {
+      console.error('Website fetch failed:', error)
+
+      return NextResponse.json(
+        { error: 'Could not fetch that URL.' },
+        { status: 400 }
+      )
+    }
+
+    if (!rawContent || rawContent.length < 50) {
       return NextResponse.json(
         { error: 'Could not extract text from this URL.' },
         { status: 400 }
       )
     }
 
-    const prompt = `You are extracting business profile information from website content.
+    const prompt = `
+You are extracting business profile information from website content.
 
 CONTENT:
 ${rawContent}
 
-Extract the following and return ONLY valid JSON, no other text:
+Extract the following and return ONLY valid JSON.
+
 {
-  "businessName": "company or person name",
-  "services": ["service 1", "service 2", "service 3"],
-  "expertise": "who they serve and what they specialise in",
-  "pastWork": "notable clients, projects, or case studies mentioned"
+  "businessName": "",
+  "services": [],
+  "expertise": "",
+  "pastWork": ""
 }
 
 Rules:
-- If something is not mentioned, return an empty string or empty array
-- services should be individual items, max 6
-- Keep expertise to one sentence
-- Keep pastWork to one sentence
-- Never make things up — only extract what is actually in the content`
+- Never invent information
+- If unknown return empty string or empty array
+- Services should be individual items
+- Maximum 6 services
+- Expertise should be one sentence
+- Past work should be one sentence
+`
 
     const response = await groq.chat.completions.create({
       model: MODEL,
-      messages: [{ role: 'user', content: prompt }],
+      messages: [
+        {
+          role: 'user',
+          content: prompt,
+        },
+      ],
       temperature: 0.1,
       max_tokens: 800,
     })
 
-    const content = response.choices[0].message.content || '{}'
-    const cleaned = content.replace(/```json|```/g, '').trim()
-    const extracted = JSON.parse(cleaned)
+    const content =
+      response.choices[0].message.content || '{}'
 
-    return NextResponse.json({ success: true, extracted, rawContent })
+    const cleaned = content
+      .replace(/```json/g, '')
+      .replace(/```/g, '')
+      .trim()
+
+    let extracted
+
+    try {
+      extracted = JSON.parse(cleaned)
+    } catch {
+      console.error('Invalid JSON returned:', cleaned)
+
+      return NextResponse.json(
+        {
+          error: 'Model returned invalid JSON',
+          raw: cleaned,
+        },
+        { status: 500 }
+      )
+    }
+
+    return NextResponse.json({
+      success: true,
+      extracted,
+      rawContent,
+    })
   } catch (error) {
     console.error('Extract business error:', error)
+
     return NextResponse.json(
-      { error: 'Failed to extract business info' },
-      { status: 500 }
+      {
+        error: 'Failed to extract business info',
+      },
+      {
+        status: 500,
+      }
     )
   }
 }
