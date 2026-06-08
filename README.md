@@ -1,17 +1,51 @@
 # ClientRadar 🎯
 > AI-powered B2B opportunity intelligence. Watches your clients so you know exactly when to pitch.
 
-## Team
+**Live at:** [https://client-radar-self.vercel.app](https://client-radar-self.vercel.app)
+
+ClientRadar is built for B2B freelancers, agencies, and corporate service providers who lose deals not because they lack skill, but because they pitch at the wrong time with the wrong message.
+
+## The Problem
+
+When a client hires a new Head of Growth, raises funding, or launches a new product line—that is a signal. It means they have a new problem and a budget to solve it. Nobody catches these signals consistently.
+
+For corporate service sellers, the problem runs deeper. They have a full catalogue of services but no way to know which client needs what right now. They default to cold outreach (which fails) or wait for clients to come to them (which is slow).
+
+Tools like LinkedIn Sales Navigator are built for enterprise sales teams with big budgets. Independent operators and growing service businesses have nothing built for them.
+
+## The Solution
+
+ClientRadar is not a search tool or a CRM—it's an **opportunity engine**.
+
+The core innovation is a two-step AI pipeline:
+1. **Signal Detection** — reads what's happening at client companies (new hires, job postings, funding rounds, leadership changes)
+2. **Personalized Pitch Generation** — cross-references those signals against your specific services and past work to generate ready-to-send pitches
+
+The output isn't a report or dashboard. It's a specific action: "Here is what changed, here is why it matters to your business, and here is exactly what to say to them today."
+
+## Who It's For
+
+Our primary customers are Pakistani B2B service providers: freelancers, small agencies, and corporate sales teams offering services like web development, branding, SEO, software, or consulting. The market opportunity is substantial—Pakistan has over 1.5 million registered freelancers, with at least 300,000 operating in B2B services. Across South Asia, the B2B services sector is worth hundreds of billions of dollars.
+
+## How It Works
+
+1. **Onboard** — Paste your website URL. Your business profile, services, and past work are extracted automatically
+2. **Add Clients** — ClientRadar monitors them for signals
+3. **Receive Opportunities** — AI-generated pitch opportunities with ready-to-send outreach messages
+4. **Take Action** — Copy and send. The entire pipeline works in under 60 seconds
+
+## The Team
+
 | Member | Role |
 |--------|------|
 | Mahnoor | Backend + Frontend Support |
 | Ibad | Frontend |
 | Shayan | Frontend |
 
-## What It Does
-ClientRadar monitors your clients' digital activity — hires, news, funding, expansions — and generates personalised pitch opportunities matched to YOUR specific services and capabilities.
+We bring together backend engineering, frontend development, and product thinking. We've built and shipped AI-powered production systems before and understand this market from the inside. We are not building for an imagined customer—we are building for ourselves and people exactly like us.
 
 ## Tech Stack
+
 - **Next.js 14** (App Router, TypeScript)
 - **Groq** (llama-3.3-70b) — LLM inference
 - **Serper** — Google Search API
@@ -19,6 +53,7 @@ ClientRadar monitors your clients' digital activity — hires, news, funding, ex
 - **Tailwind CSS** — Styling
 
 ## Project Structure
+
 ```
 clientradar/
 ├── app/
@@ -44,6 +79,7 @@ clientradar/
 ```
 
 ## Pipeline
+
 ```
 Onboard (your services + clients)
          ↓
@@ -59,17 +95,21 @@ Dashboard shows alerts + ready-to-send pitches
 ## Setup
 
 ### 1. Clone & Install
+
 ```bash
-git clone https://github.com/YOUR_ORG/clientradar.git
-cd clientradar
+git clone https://github.com/MahnoorAhmed-Dev/Client-Radar.git
+cd Client-Radar
 npm install
 ```
 
 ### 2. Environment Variables
+
 ```bash
 cp .env.local.example .env.local
 ```
+
 Fill in all keys:
+
 ```
 GROQ_API_KEY=gsk_...
 SERPER_API_KEY=...
@@ -79,23 +119,28 @@ SUPABASE_SERVICE_ROLE_KEY=sb_secret_...
 ```
 
 ### 3. Database
+
 - Go to Supabase → SQL Editor
 - Paste and run the full contents of `supabase-schema.sql`
 - You should see "Success. No rows returned"
 
 ### 4. Run
+
 ```bash
 npm run dev
 ```
+
 Open http://localhost:3000
 
 ## Git Workflow
+
 - Branch naming: `ibad/feature-name`, `mahnoor/feature-name`, `shayan/feature-name`
 - Always branch off `main`
 - Merge order: Mahnoor (backend) first, then Ibad, then Shayan
 - Commit prefixes: `feat:`, `fix:`, `chore:`
 
 ## API Keys
+
 | Service | URL | Notes |
 |---------|-----|-------|
 | Groq | https://console.groq.com | Free, instant |
@@ -103,6 +148,7 @@ Open http://localhost:3000
 | Supabase | https://supabase.com | Free tier |
 
 ## Demo Script (Pitch Day)
+
 1. Landing page — "Your clients are moving. Are you watching?"
 2. Onboard — add your agency + 2 real clients
 3. Hit **SCAN** — watch terminal log fill live
@@ -110,3 +156,15 @@ Open http://localhost:3000
 5. Copy pitch — ready to send right now
 
 **Money line:** "This isn't a ChatGPT prompt. It knows your services, watches your clients, and tells you exactly when to reach out and what to say."
+
+## Roadmap
+
+- Daily automated monitoring so users wake up to fresh opportunities every morning
+- WhatsApp and email alerts to deliver intelligence directly to where users operate
+- CRM layer to track which pitches were sent, opened, and converted
+- Shared team dashboard for corporate clients so entire sales teams work from the same live intelligence feed
+- Long term: ClientRadar becomes the permanent answer to "who should I reach out to today, and what should I say?"
+
+## Status
+
+ClientRadar is live and fully functional. Users onboard by pasting their website URL and their business profile, services, and past work are extracted automatically. Clients are added and monitored. AI-generated pitch opportunities with ready-to-send outreach messages are produced in under 60 seconds. Testing across multiple Pakistani company profiles confirms the pipeline generates accurate, contextually relevant opportunities that a real salesperson would actually use.
