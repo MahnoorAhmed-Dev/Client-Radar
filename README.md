@@ -1,4 +1,4 @@
-# ClientRadar 🎯
+# ClientRadar
 > AI-powered B2B opportunity intelligence. Watches your clients so you know exactly when to pitch.
 
 **Live at:** [https://client-radar-self.vercel.app](https://client-radar-self.vercel.app)
